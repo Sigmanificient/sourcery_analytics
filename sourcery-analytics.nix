@@ -67,16 +67,16 @@ let
   };
 
   rich = pypkgs.buildPythonPackage rec {
-     pname = "rich";
-     version = "12.5.1";
+    pname = "rich";
+    version = "12.5.1";
 
-     src = pypkgs.fetchPypi {
-       inherit pname version;
-       sha256 = "sha256-Y6XFzjZz09X7vyPNh+EauEtrRRQ28bfxnsVLa8Nu18o=";
-     };
+    src = pypkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "sha256-Y6XFzjZz09X7vyPNh+EauEtrRRQ28bfxnsVLa8Nu18o=";
+    };
 
-     doCheck = false;
-     propagatedBuildInputs = [ pypkgs.commonmark pypkgs.pygments ];
+    doCheck = false;
+    propagatedBuildInputs = [ pypkgs.commonmark pypkgs.pygments ];
   };
 
   more-itertools = pypkgs.buildPythonPackage rec {
