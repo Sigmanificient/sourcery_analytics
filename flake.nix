@@ -4,13 +4,20 @@
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils } @inputs:
-    utils.lib.eachDefaultSystem (system:
-      with import nixpkgs { inherit system; }; {
-    devShells.default = mkShell {
-      packages = [
-        (import ./sourcery-analytics.nix { inherit pkgs; })
-      ];
-    };
-  });
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+    flake-utils.lib.eachDefaultSystem
+      (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        rec {
+          packages = flake-utils.lib.flattenTree rec {
+            sourcery-analytics = (import ./sourcery-analytics.nix { inherit pkgs; });
+            default = sourcery-analytics;
+          };
+
+          apps.sourcery-analytics.type = "app";
+          apps.sourcery-analytics.program = "${packages.sourcery-analytics}/bin/sourcery-analytics";
+          apps.default = apps.sourcery-analytics;
+        });
 }
